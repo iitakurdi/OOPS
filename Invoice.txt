@@ -1,0 +1,87 @@
+// Invoice class
+class Invoice {
+    // Instance variables
+    private String partNumber;
+    private String partDescription;
+    private int quantity;
+    private double pricePerItem;
+
+    // Constructor to initialize the instance variables
+    public Invoice(String partNumber, String partDescription, int quantity, double pricePerItem) {
+        this.partNumber = partNumber;
+        this.partDescription = partDescription;
+        setQuantity(quantity); // Set quantity using the setter method
+        setPricePerItem(pricePerItem); // Set price per item using the setter method
+    }
+
+    // Getter and setter methods for partNumber
+    public String getPartNumber() {
+        return partNumber;
+    }
+
+    public void setPartNumber(String partNumber) {
+        this.partNumber = partNumber;
+    }
+
+    // Getter and setter methods for partDescription
+    public String getPartDescription() {
+        return partDescription;
+    }
+
+    public void setPartDescription(String partDescription) {
+        this.partDescription = partDescription;
+    }
+
+    // Getter and setter methods for quantity
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        // If quantity is not positive, set it to 0
+        if (quantity < 0) {
+            this.quantity = 0;
+        } else {
+            this.quantity = quantity;
+        }
+    }
+
+    // Getter and setter methods for pricePerItem
+    public double getPricePerItem() {
+        return pricePerItem;
+    }
+
+    public void setPricePerItem(double pricePerItem) {
+        // If price per item is not positive, set it to 0.0
+        if (pricePerItem < 0) {
+            this.pricePerItem = 0.0;
+        } else {
+            this.pricePerItem = pricePerItem;
+        }
+    }
+
+    // Method to calculate and return the invoice amount
+    public double getInvoiceAmount() {
+        return this.quantity * this.pricePerItem;
+    }
+}
+
+// Test class for the Invoice class
+public class InvoiceTest {
+    public static void main(String[] args) {
+        // Create two Invoice objects
+        Invoice invoice1 = new Invoice("P123", "Hammer", 10, 15.50);
+        Invoice invoice2 = new Invoice("P456", "Screwdriver", -5, 5.00); // Negative quantity
+
+        // Display the invoice amount of each invoice
+        System.out.println("Invoice amount for " + invoice1.getPartNumber() + " (" + invoice1.getPartDescription() + "): $" + invoice1.getInvoiceAmount());
+        System.out.println("Invoice amount for " + invoice2.getPartNumber() + " (" + invoice2.getPartDescription() + "): $" + invoice2.getInvoiceAmount());
+
+        // Set quantity and price per item to valid values for invoice2
+        invoice2.setQuantity(8);
+        invoice2.setPricePerItem(4.75);
+
+        // Display the invoice amount of invoice2 after updating quantity and price per item
+        System.out.println("Updated invoice amount for " + invoice2.getPartNumber() + " (" + invoice2.getPartDescription() + "): $" + invoice2.getInvoiceAmount());
+    }
+}

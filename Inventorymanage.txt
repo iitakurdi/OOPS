@@ -1,0 +1,218 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Class representing a product in the inventory
+class Product {
+    private int id;
+    private String name;
+    private double costPrice;
+    private double sellingPrice;
+    private int quantity;
+    private int initialQuantity; // Stores the initial quantity of the product
+
+    // Constructor
+    public Product(int id, String name, double costPrice, double sellingPrice, int quantity) {
+        this.id = id;
+        this.name = name;
+        this.costPrice = costPrice;
+        this.sellingPrice = sellingPrice;
+        this.quantity = quantity;
+        this.initialQuantity = quantity; // Initialize initial quantity
+    }
+
+    // Getter methods for product information
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getCostPrice() {
+        return costPrice;
+    }
+
+    public double getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    // Setter methods for quantity
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    // Method to get the initial quantity of the product
+    public int getInitialQuantity() {
+        return initialQuantity;
+    }
+
+    // Calculate profit/loss per unit sold
+    public double calculateProfit() {
+        return sellingPrice - costPrice;
+    }
+
+    // Calculate total profit/loss based on quantity sold
+    public double calculateTotalProfit(int quantitySold) {
+        return calculateProfit() * quantitySold;
+    }
+}
+
+// Class representing the inventory management system
+class InventorySystem {
+    private List<Product> products;
+
+    // Constructor
+    public InventorySystem() {
+        products = new ArrayList<>();
+    }
+
+    // Method to add a new product to the inventory
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    // Method to list all products in the inventory
+    public void listAllProducts() {
+        System.out.println("List of all products:");
+        for (Product product : products) {
+            System.out.println("ID: " + product.getId() + ", Name: " + product.getName() + ", Price: $" + product.getSellingPrice() + ", Quantity: " + product.getQuantity());
+        }
+    }
+
+    // Method to display individual product information
+    public void displayProductInfo(int id) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                System.out.println("Product Information:");
+                System.out.println("ID: " + product.getId());
+                System.out.println("Name: " + product.getName());
+                System.out.println("Cost Price: $" + product.getCostPrice());
+                System.out.println("Selling Price: $" + product.getSellingPrice());
+                System.out.println("Quantity: " + product.getQuantity());
+                return;
+            }
+        }
+        System.out.println("Product not found.");
+    }
+
+    // Method to handle purchase operation
+    public void purchaseProduct(int id, int quantity) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                if (quantity <= product.getQuantity()) {
+                    product.setQuantity(product.getQuantity() - quantity);
+                    double totalCost = product.getSellingPrice() * quantity;
+                    System.out.println("Purchase successful! Total cost: $" + totalCost);
+                    return;
+                } else {
+                    System.out.println("Insufficient stock for the product.");
+                    return;
+                }
+            }
+        }
+        System.out.println("Product not found.");
+    }
+
+    // Method to handle shipping operation
+    public void shipProduct(int id, int quantity) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                if (quantity <= product.getQuantity()) {
+                    product.setQuantity(product.getQuantity() - quantity);
+                    System.out.println("Product shipped successfully!");
+                    return;
+                } else {
+                    System.out.println("Insufficient stock for the product.");
+                    return;
+                }
+            }
+        }
+        System.out.println("Product not found.");
+    }
+
+    // Method to display balance stock for each product
+    public void displayBalanceStock() {
+        System.out.println("Balance stock:");
+        for (Product product : products) {
+            System.out.println("ID: " + product.getId() + ", Name: " + product.getName() + ", Quantity: " + product.getQuantity());
+        }
+    }
+
+    // Method to calculate profit or loss
+    public void calculateProfitOrLoss() {
+        double totalProfit = 0;
+        for (Product product : products) {
+            int quantitySold = product.getInitialQuantity() - product.getQuantity();
+            double productProfit = product.calculateTotalProfit(quantitySold);
+            totalProfit += productProfit;
+        }
+        System.out.println("Total profit/loss: $" + totalProfit);
+    }
+}
+
+// Test application for the inventory management system
+public class InventoryTest {
+    public static void main(String[] args) {
+        InventorySystem inventory = new InventorySystem();
+        inventory.addProduct(new Product(1, "Product A", 50.0, 75.0, 100));
+        inventory.addProduct(new Product(2, "Product B", 30.0, 45.0, 150));
+        inventory.addProduct(new Product(3, "Product C", 25.0, 35.0, 200));
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nInventory Management System");
+            System.out.println("1. List of all products");
+            System.out.println("2. Display individual product information");
+            System.out.println("3. Purchase");
+            System.out.println("4. Shipping");
+            System.out.println("5. Balance stock");
+            System.out.println("6. Loss and Profit calculation");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    inventory.listAllProducts();
+                    break;
+                case 2:
+                    System.out.print("Enter product ID: ");
+                    int id = scanner.nextInt();
+                    inventory.displayProductInfo(id);
+                    break;
+                case 3:
+                    System.out.print("Enter product ID: ");
+                    int purchaseId = scanner.nextInt();
+                    System.out.print("Enter quantity: ");
+                    int purchaseQuantity = scanner.nextInt();
+                    inventory.purchaseProduct(purchaseId, purchaseQuantity);
+                    break;
+                case 4:
+                    System.out.print("Enter product ID: ");
+                    int shipId = scanner.nextInt();
+                    System.out.print("Enter quantity: ");
+                    int shipQuantity = scanner.nextInt();
+                    inventory.shipProduct(shipId, shipQuantity);
+                    break;
+                case 5:
+                    inventory.displayBalanceStock();
+                    break;
+                case 6:
+                    inventory.calculateProfitOrLoss();
+                    break;
+                case 7:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}

@@ -1,0 +1,55 @@
+// Base class Shape
+abstract class Shape {
+    protected double dimension1;
+    protected double dimension2;
+
+    // Method to input data for the shape
+    public void input_data(double d1, double d2) {
+        this.dimension1 = d1;
+        this.dimension2 = d2;
+    }
+
+    // Abstract method to compute area
+    public abstract double compute_area();
+}
+
+// Derived class Triangle
+class Triangle extends Shape {
+    // Constructor
+    public Triangle(double base, double height) {
+        input_data(base, height);
+    }
+
+    // Override compute_area() to calculate the area of a triangle
+    @Override
+    public double compute_area() {
+        return 0.5 * dimension1 * dimension2;
+    }
+}
+
+// Derived class Rectangle
+class Rectangle extends Shape {
+    // Constructor
+    public Rectangle(double length, double width) {
+        input_data(length, width);
+    }
+
+    // Override compute_area() to calculate the area of a rectangle
+    @Override
+    public double compute_area() {
+        return dimension1 * dimension2;
+    }
+}
+
+// Test application
+public class ShapeTest {
+    public static void main(String[] args) {
+        // Create a triangle with base 5 and height 10
+        Shape triangle = new Triangle(5, 10);
+        System.out.println("Area of triangle: " + triangle.compute_area());
+
+        // Create a rectangle with length 4 and width 6
+        Shape rectangle = new Rectangle(4, 6);
+        System.out.println("Area of rectangle: " + rectangle.compute_area());
+    }
+}

@@ -1,0 +1,190 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Class representing a bank account
+class BankAccount {
+    private int accountNumber;
+    private String accountHolderName;
+    private double balance;
+    private static final double DAILY_WITHDRAWAL_LIMIT = 500.0;
+
+    // Constructor
+    public BankAccount(int accountNumber, String accountHolderName, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.accountHolderName = accountHolderName;
+        this.balance = initialBalance;
+    }
+
+    // Getter method for account number
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    // Method to deposit money into the account
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposit successful! New balance: $" + balance);
+        } else {
+            System.out.println("Invalid deposit amount.");
+        }
+    }
+
+    // Method to withdraw money from the account while honoring daily withdrawal limit
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid withdrawal amount.");
+            return;
+        }
+        if (amount > DAILY_WITHDRAWAL_LIMIT) {
+            System.out.println("Withdrawal amount exceeds daily limit of $" + DAILY_WITHDRAWAL_LIMIT);
+            return;
+        }
+        if (amount > balance) {
+            System.out.println("Insufficient funds.");
+            return;
+        }
+        balance -= amount;
+        System.out.println("Withdrawal successful! New balance: $" + balance);
+    }
+
+    // Method to check the account balance
+    public double getBalance() {
+        return balance;
+    }
+
+    // Method to display account information
+    public void displayAccountInfo() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Holder Name: " + accountHolderName);
+        System.out.println("Balance: $" + balance);
+    }
+}
+
+// Class representing the banking system
+class BankSystem {
+    private List<BankAccount> accounts;
+    private int nextAccountNumber = 1000; // Starting account number
+
+    // Constructor
+    public BankSystem() {
+        accounts = new ArrayList<>();
+    }
+
+    // Method to create a new bank account
+    public void createAccount(String accountHolderName, double initialBalance) {
+        if (initialBalance < 0) {
+            System.out.println("Initial balance cannot be negative.");
+            return;
+        }
+        BankAccount newAccount = new BankAccount(nextAccountNumber, accountHolderName, initialBalance);
+        accounts.add(newAccount);
+        System.out.println("Account created successfully! Account number: " + nextAccountNumber);
+        nextAccountNumber++;
+    }
+
+    // Method to find an account by its number
+    private BankAccount findAccountByNumber(int accountNumber) {
+        for (BankAccount account : accounts) {
+            if (account.getAccountNumber() == accountNumber) {
+                return account;
+            }
+        }
+        System.out.println("Account not found.");
+        return null;
+    }
+
+    // Method to deposit money into an account
+    public void depositMoney(int accountNumber, double amount) {
+        BankAccount account = findAccountByNumber(accountNumber);
+        if (account != null) {
+            account.deposit(amount);
+        }
+    }
+
+    // Method to withdraw money from an account
+    public void withdrawMoney(int accountNumber, double amount) {
+        BankAccount account = findAccountByNumber(accountNumber);
+        if (account != null) {
+            account.withdraw(amount);
+        }
+    }
+
+    // Method to check the balance of an account
+    public void checkBalance(int accountNumber) {
+        BankAccount account = findAccountByNumber(accountNumber);
+        if (account != null) {
+            System.out.println("Current balance: $" + account.getBalance());
+        }
+    }
+
+    // Method to display account information
+    public void displayAccountInfo(int accountNumber) {
+        BankAccount account = findAccountByNumber(accountNumber);
+        if (account != null) {
+            account.displayAccountInfo();
+        }
+    }
+}
+
+// Test application for the banking system
+public class BankingSystemTest {
+    public static void main(String[] args) {
+        BankSystem bankSystem = new BankSystem();
+        Scanner scanner = new Scanner(System.in);
+        
+        while (true) {
+            System.out.println("\nBanking System");
+            System.out.println("1. Create an account");
+            System.out.println("2. Deposit money");
+            System.out.println("3. Withdraw money");
+            System.out.println("4. Check balance");
+            System.out.println("5. Display account information");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter account holder name: ");
+                    scanner.nextLine(); // Consume newline
+                    String name = scanner.nextLine();
+                    System.out.print("Enter initial balance: ");
+                    double initialBalance = scanner.nextDouble();
+                    bankSystem.createAccount(name, initialBalance);
+                    break;
+                case 2:
+                    System.out.print("Enter account number: ");
+                    int depositAccountNumber = scanner.nextInt();
+                    System.out.print("Enter amount to deposit: ");
+                    double depositAmount = scanner.nextDouble();
+                    bankSystem.depositMoney(depositAccountNumber, depositAmount);
+                    break;
+                case 3:
+                    System.out.print("Enter account number: ");
+                    int withdrawAccountNumber = scanner.nextInt();
+                    System.out.print("Enter amount to withdraw: ");
+                    double withdrawAmount = scanner.nextDouble();
+                    bankSystem.withdrawMoney(withdrawAccountNumber, withdrawAmount);
+                    break;
+                case 4:
+                    System.out.print("Enter account number: ");
+                    int checkBalanceAccountNumber = scanner.nextInt();
+                    bankSystem.checkBalance(checkBalanceAccountNumber);
+                    break;
+                case 5:
+                    System.out.print("Enter account number: ");
+                    int displayAccountNumber = scanner.nextInt();
+                    bankSystem.displayAccountInfo(displayAccountNumber);
+                    break;
+                case 6:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}

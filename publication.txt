@@ -1,0 +1,114 @@
+// Base class for publication
+class Publication {
+    protected String title;
+    protected double price;
+    protected int copies;
+
+    // Constructor
+    public Publication(String title, double price, int copies) {
+        this.title = title;
+        this.price = price;
+        this.copies = copies;
+    }
+
+    // Method to sell a copy of the publication
+    public void saleCopy(int numCopies) {
+        if (numCopies > copies) {
+            System.out.println("Not enough copies available.");
+        } else {
+            copies -= numCopies;
+            System.out.println(numCopies + " copies sold.");
+        }
+    }
+
+    // Getters
+    public String getTitle() {
+        return title;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getCopies() {
+        return copies;
+    }
+}
+
+// Subclass for books
+class Book extends Publication {
+    private String author;
+
+    // Constructor
+    public Book(String title, double price, int copies, String author) {
+        super(title, price, copies);
+        this.author = author;
+    }
+
+    // Method to order copies of the book
+    public void orderCopies(int numCopies) {
+        copies += numCopies;
+        System.out.println(numCopies + " copies of the book ordered.");
+    }
+
+    // Getter for author
+    public String getAuthor() {
+        return author;
+    }
+}
+
+// Subclass for magazines
+class Magazine extends Publication {
+    private int currentIssue;
+
+    // Constructor
+    public Magazine(String title, double price, int copies, int currentIssue) {
+        super(title, price, copies);
+        this.currentIssue = currentIssue;
+    }
+
+    // Method to order quantity of magazines
+    public void orderQty(int numCopies) {
+        copies += numCopies;
+        System.out.println(numCopies + " copies of the magazine ordered.");
+    }
+
+    // Method to receive a new issue of the magazine
+    public void receiveIssue() {
+        currentIssue++;
+        System.out.println("Received issue " + currentIssue + " of the magazine.");
+    }
+
+    // Getter for current issue
+    public int getCurrentIssue() {
+        return currentIssue;
+    }
+}
+
+// Program to test the classes and calculate total sale of publication
+public class PublicationTest {
+    public static void main(String[] args) {
+        // Create instances of Book and Magazine
+        Book book = new Book("Effective Java", 45.0, 50, "Joshua Bloch");
+        Magazine magazine = new Magazine("Science Daily", 5.0, 100, 10);
+
+        // Order copies of the book
+        book.orderCopies(20);
+        // Sell copies of the book
+        book.saleCopy(10);
+
+        // Order copies of the magazine
+        magazine.orderQty(30);
+        // Receive a new issue of the magazine
+        magazine.receiveIssue();
+
+        // Sell copies of the magazine
+        magazine.saleCopy(20);
+
+        // Calculate total sale of publications
+        double totalSale = (50 * 45.0) + (80 * 5.0);
+
+        // Display the total sale of publications
+        System.out.println("Total sale of publications: $" + totalSale);
+    }
+}

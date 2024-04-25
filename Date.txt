@@ -1,0 +1,119 @@
+// Date class
+class Date {
+    // Instance variables
+    private int month;
+    private int day;
+    private int year;
+
+    // Constructor to initialize the instance variables
+    public Date(int month, int day, int year) {
+        setMonth(month);
+        setDay(day);
+        setYear(year);
+    }
+
+    // Getter and setter methods for month
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        // Validate the month
+        if (month >= 1 && month <= 12) {
+            this.month = month;
+        } else {
+            throw new IllegalArgumentException("Month must be between 1 and 12.");
+        }
+    }
+
+    // Getter and setter methods for day
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        // Validate the day
+        // Define the number of days in each month
+        int[] daysInMonth = {
+            31, // January
+            (isLeapYear(year) ? 29 : 28), // February (28 or 29 in leap years)
+            31, // March
+            30, // April
+            31, // May
+            30, // June
+            31, // July
+            31, // August
+            30, // September
+            31, // October
+            30, // November
+            31  // December
+        };
+        
+        if (day >= 1 && day <= daysInMonth[month - 1]) {
+            this.day = day;
+        } else {
+            throw new IllegalArgumentException("Day must be within valid range for the specified month.");
+        }
+    }
+
+    // Getter and setter methods for year
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        // Validate the year
+        if (year > 0) {
+            this.year = year;
+        } else {
+            throw new IllegalArgumentException("Year must be positive.");
+        }
+    }
+
+    // Method to display the date in the format "month/day/year"
+    public void displayDate() {
+        System.out.println(month + "/" + day + "/" + year);
+    }
+
+    // Helper method to determine if a year is a leap year
+    private boolean isLeapYear(int year) {
+        // Leap year conditions:
+        // - Divisible by 4 but not divisible by 100
+        // - Divisible by 400
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+}
+
+// Test class for the Date class
+public class DateTest {
+    public static void main(String[] args) {
+        // Create two Date objects with valid dates
+        Date date1 = new Date(3, 15, 2024); // March 15, 2024
+        Date date2 = new Date(11, 23, 2023); // November 23, 2023
+
+        // Display the date of each Date object
+        System.out.print("Date 1: ");
+        date1.displayDate(); // Displays 3/15/2024
+        System.out.print("Date 2: ");
+        date2.displayDate(); // Displays 11/23/2023
+
+        // Attempt to create Date objects with invalid dates
+        try {
+            Date invalidDate1 = new Date(2, 30, 2022); // Invalid date: February 30, 2022
+        } catch (IllegalArgumentException e) {
+            System.out.println("Caught exception for invalid date: " + e.getMessage());
+        }
+
+        try {
+            Date invalidDate2 = new Date(13, 10, 2022); // Invalid month: 13
+        } catch (IllegalArgumentException e) {
+            System.out.println("Caught exception for invalid month: " + e.getMessage());
+        }
+
+        try {
+            Date invalidDate3 = new Date(5, 15, -2022); // Invalid year: -2022
+        } catch (IllegalArgumentException e) {
+            System.out.println("Caught exception for invalid year: " + e.getMessage());
+        }
+    }
+}

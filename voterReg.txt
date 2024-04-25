@@ -1,0 +1,149 @@
+import java.io.*;
+import java.util.*;
+
+class Voter {
+    private String nationalId;
+    private String name;
+    private String fatherOrHusbandName;
+    private int age;
+    private String address;
+    private String province;
+
+    public Voter(String nationalId, String name, String fatherOrHusbandName, int age, String address, String province) {
+        this.nationalId = nationalId;
+        this.name = name;
+        this.fatherOrHusbandName = fatherOrHusbandName;
+        this.age = age;
+        this.address = address;
+        this.province = province;
+    }
+
+    public String getNationalId() {
+        return nationalId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getFatherOrHusbandName() {
+        return fatherOrHusbandName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    @Override
+    public String toString() {
+        return "National ID: " + nationalId + ", Name: " + name + ", Father/Husband's Name: " + fatherOrHusbandName +
+                ", Age: " + age + ", Address: " + address + ", Province: " + province;
+    }
+}
+
+class VoterTest {
+    private List<Voter> voters;
+    private Scanner scanner;
+
+    public VoterTest() {
+        voters = new ArrayList<>();
+        scanner = new Scanner(System.in);
+    }
+
+    public void displayMenu() {
+        System.out.println("Voter Registration Form:");
+        System.out.println("1. Add New Voter");
+        System.out.println("2. List All Voters");
+        System.out.println("3. Find a Voter By Name");
+        System.out.println("4. Exit");
+    }
+
+    public void addNewVoter() {
+        System.out.println("Enter National ID Card Number:");
+        String nationalId = scanner.nextLine();
+        System.out.println("Enter Name:");
+        String name = scanner.nextLine();
+        System.out.println("Enter Father/Husband's Name:");
+        String fatherOrHusbandName = scanner.nextLine();
+        System.out.println("Enter Age:");
+        int age = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.println("Enter Address:");
+        String address = scanner.nextLine();
+        System.out.println("Enter Province:");
+        String province = scanner.nextLine();
+
+        Voter newVoter = new Voter(nationalId, name, fatherOrHusbandName, age, address, province);
+        voters.add(newVoter);
+        System.out.println("Voter added successfully!");
+    }
+
+    public void listAllVoters() {
+        if (voters.isEmpty()) {
+            System.out.println("No voters registered yet.");
+        } else {
+            System.out.println("List of all voters:");
+            for (Voter voter : voters) {
+                System.out.println(voter);
+            }
+        }
+    }
+
+    public void findVoterByName() {
+        System.out.println("Enter name to search:");
+        String searchName = scanner.nextLine();
+        boolean found = false;
+        for (Voter voter : voters) {
+            if (voter.getName().equalsIgnoreCase(searchName)) {
+                System.out.println("Voter found:");
+                System.out.println(voter);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("No voter found with the given name.");
+        }
+    }
+
+    public void run() {
+        int choice;
+        do {
+            displayMenu();
+            System.out.println("Enter your choice:");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+            switch (choice) {
+                case 1:
+                    addNewVoter();
+                    break;
+                case 2:
+                    listAllVoters();
+                    break;
+                case 3:
+                    findVoterByName();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+            }
+        } while (choice != 4);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        VoterTest voterTest = new VoterTest();
+        voterTest.run();
+    }
+}

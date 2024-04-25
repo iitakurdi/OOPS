@@ -1,0 +1,116 @@
+// Class for daily weather report
+class WeatherReport {
+    private int dayOfMonth;
+    private double highTemp;
+    private double lowTemp;
+    private double amountRain;
+    private double amountSnow;
+
+    // Default constructor
+    public WeatherReport() {
+        this.dayOfMonth = 0;
+        this.highTemp = 0.0;
+        this.lowTemp = 0.0;
+        this.amountRain = 0.0;
+        this.amountSnow = 0.0;
+    }
+
+    // Parameterized constructor
+    public WeatherReport(int dayOfMonth, double highTemp, double lowTemp, double amountRain, double amountSnow) {
+        this.dayOfMonth = dayOfMonth;
+        this.highTemp = highTemp;
+        this.lowTemp = lowTemp;
+        this.amountRain = amountRain;
+        this.amountSnow = amountSnow;
+    }
+
+    // Getters and setters for each attribute
+    public int getDayOfMonth() {
+        return dayOfMonth;
+    }
+
+    public void setDayOfMonth(int dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
+    }
+
+    public double getHighTemp() {
+        return highTemp;
+    }
+
+    public void setHighTemp(double highTemp) {
+        this.highTemp = highTemp;
+    }
+
+    public double getLowTemp() {
+        return lowTemp;
+    }
+
+    public void setLowTemp(double lowTemp) {
+        this.lowTemp = lowTemp;
+    }
+
+    public double getAmountRain() {
+        return amountRain;
+    }
+
+    public void setAmountRain(double amountRain) {
+        this.amountRain = amountRain;
+    }
+
+    public double getAmountSnow() {
+        return amountSnow;
+    }
+
+    public void setAmountSnow(double amountSnow) {
+        this.amountSnow = amountSnow;
+    }
+}
+
+// Class for monthly weather report
+public class MonthlyWeatherReport {
+    public static void main(String[] args) {
+        // Number of days in the month
+        int daysInMonth = 30;
+
+        // Array to hold daily weather reports
+        WeatherReport[] reports = new WeatherReport[daysInMonth];
+
+        // Initialize daily reports with some values
+        for (int i = 0; i < daysInMonth; i++) {
+            int dayOfMonth = i + 1;
+            double highTemp = 20.0 + (i % 10); // Sample high temperature values
+            double lowTemp = 10.0 + (i % 5); // Sample low temperature values
+            double amountRain = i % 2 == 0 ? 5.0 : 0.0; // Sample rain values
+            double amountSnow = i % 3 == 0 ? 2.0 : 0.0; // Sample snow values
+
+            // Create a daily weather report and add it to the array
+            reports[i] = new WeatherReport(dayOfMonth, highTemp, lowTemp, amountRain, amountSnow);
+        }
+
+        // Calculate total sums for each attribute
+        double totalHighTemp = 0.0;
+        double totalLowTemp = 0.0;
+        double totalAmountRain = 0.0;
+        double totalAmountSnow = 0.0;
+
+        for (WeatherReport report : reports) {
+            totalHighTemp += report.getHighTemp();
+            totalLowTemp += report.getLowTemp();
+            totalAmountRain += report.getAmountRain();
+            totalAmountSnow += report.getAmountSnow();
+        }
+
+        // Calculate averages
+        double averageHighTemp = totalHighTemp / daysInMonth;
+        double averageLowTemp = totalLowTemp / daysInMonth;
+        double averageAmountRain = totalAmountRain / daysInMonth;
+        double averageAmountSnow = totalAmountSnow / daysInMonth;
+
+        // Display the monthly report
+        System.out.printf("Monthly Weather Report:%n");
+        System.out.printf("Average High Temperature: %.2f C%n", averageHighTemp);
+        System.out.printf("Average Low Temperature: %.2f C%n", averageLowTemp);
+        System.out.printf("Average Amount of Rain: %.2f mm%n", averageAmountRain);
+        System.out.printf("Average Amount of Snow: %.2f mm%n", averageAmountSnow);
+    }
+}
